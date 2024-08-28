@@ -20,6 +20,20 @@ from rdkit.Chem import (
 from rdkit.Chem.QED import qed
 from rdkit.Chem.Crippen import MolLogP
 from rdkit.Chem.Descriptors import ExactMolWt, BertzCT
+
+from molecule_generation.chem.properties.smiles.plogp import PlogP
+from guacamol import standard_benchmarks
+
+GUACAMOL_MPO_TASK_FN_SCORE = {
+    'amlodipine': standard_benchmarks.amlodipine_rings().objective.score,
+    'fexofenadine': standard_benchmarks.hard_fexofenadine().objective.score,
+    'osimertinib': standard_benchmarks.hard_osimertinib().objective.score,
+    'perindopril': standard_benchmarks.perindopril_rings().objective.score,
+    'sitagliptin': standard_benchmarks.sitagliptin_replacement().objective.score,
+    'ranolazine': standard_benchmarks.ranolazine_mpo().objective.score,
+    'zaleplon': standard_benchmarks.zaleplon_with_other_formula().objective.score,
+}
+
 from tqdm import tqdm
 
 from molecule_generation.chem.rdkit_helpers import get_atom_symbol
@@ -667,7 +681,16 @@ def _smiles_to_rdkit_mol(
                 "mol_weight": ExactMolWt(rdkit_mol),
                 "qed": qed(rdkit_mol),
                 "bertz": BertzCT(rdkit_mol),
+                "plogp": PlogP(verbose=False)(smiles_string).item(),
+                "amlodipine": GUACAMOL_MPO_TASK_FN_SCORE["amlodipine"](smiles_string),
+                "fexofenadine": GUACAMOL_MPO_TASK_FN_SCORE["fexofenadine"](smiles_string),
+                "osimertinib": GUACAMOL_MPO_TASK_FN_SCORE["osimertinib"](smiles_string),
+                "perindopril": GUACAMOL_MPO_TASK_FN_SCORE["perindopril"](smiles_string),
+                "sitagliptin": GUACAMOL_MPO_TASK_FN_SCORE["sitagliptin"](smiles_string),
+                "ranolazine": GUACAMOL_MPO_TASK_FN_SCORE["ranolazine"](smiles_string),
+                "zaleplon": GUACAMOL_MPO_TASK_FN_SCORE["zaleplon"](smiles_string),
             }
+
 
         return datapoint
     except Exception:

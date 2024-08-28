@@ -41,7 +41,7 @@ def transform_smiles_to_samples(
     """
     # Transform data:
     mol_info_dict = _smiles_to_rdkit_mol({"SMILES": smiles})
-
+    assert False, mol_info_dict
     if motif_vocabulary is None:
         mol_info_dict["motifs"] = []
     else:

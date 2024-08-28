@@ -1,0 +1,2 @@
+PYTHONPATH="${PYTHONPATH}:${PWD}" python3 molecule_generation/cli/cli.py  preprocess ~/datasets/guacamol_10 guacamol_10_out guacamol_10_trace \
+    --pretrained-model-path /home/jano1906/git/molecule-generation/checkpoints/GNN_Edge_MLP_MoLeR__2022-02-24_07-16-23_best.pkl
